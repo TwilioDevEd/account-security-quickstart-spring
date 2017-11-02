@@ -1,0 +1,82 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.5.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "io.spring.dependency-management" version "1.0.3.RELEASE"
+    id 'org.springframework.boot' version '1.5.8.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
+
+war {
+    baseName = 'account-security-quickstart-spring'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+ext['logbackVersion'] = '1.1.11'
+ext['springBootVersion'] = '1.5.8.RELEASE'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+    compile("ch.qos.logback:logback-access:${logbackVersion}")
+    compile("ch.qos.logback:logback-classic:${logbackVersion}")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("org.springframework.boot:spring-boot-starter-mustache")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-tomcat")
+    compile('net.rakugakibox.springbootext:spring-boot-ext-logback-access:1.6')
+    compile("com.twilio.sdk:twilio:7.0.0-rc-29")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.apache.httpcomponents:httpclient:4.3.6")
+    testCompile("org.apache.httpcomponents:httpasyncclient:4.0.2")
+    testCompile("org.apache.httpcomponents:httpmime:4.3.6")
+    testCompile("org.json:json:20140107")
+    testCompile("com.mashape.unirest:unirest-java:1.4.6")
+    testCompile("org.jdom:jdom:2.0.2")
+}
+
+
+eclipse {
+    classpath {
+        containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+        containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
+    }
+}
+
+task stage(dependsOn: ['assemble'])
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+jar {
+    archiveName = "app.jar"
+}
+test {
+    reports {
+        junitXml.enabled = false
+        html.enabled = false
+    }
+    testLogging {
+        exceptionFormat = "full"
+    }
+}
