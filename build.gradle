@@ -26,7 +26,8 @@ apply plugin: 'war'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-ext['logbackVersion'] = '1.2.3'
+ext['logbackVersion'] = '1.1.11'
+ext['springBootVer'] = '1.5.7.RELEASE'
 
 repositories {
     jcenter()
@@ -35,7 +36,7 @@ repositories {
 }
 
 gretty {
-    springBootVersion = '1.5.4.RELEASE'
+    springBootVersion = '1.5.7.RELEASE'
     springBoot = true
     servletContainer = 'jetty9'
     contextPath = ''
@@ -46,15 +47,10 @@ configurations {
 }
 
 dependencies {
-    compile("ch.qos.logback:logback-access:1.1.11")
-    compile('net.rakugakibox.springbootext:spring-boot-ext-logback-access:1.6')
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVer}")
+    compile 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.6.0'
     compile("com.twilio.sdk:twilio:7.0.0-rc-29")
-    testCompile("org.apache.httpcomponents:httpclient:4.3.6")
-    testCompile("org.apache.httpcomponents:httpasyncclient:4.0.2")
-    testCompile("org.apache.httpcomponents:httpmime:4.3.6")
-    testCompile("org.json:json:20140107")
-    testCompile("com.mashape.unirest:unirest-java:1.4.6")
-    testCompile("org.jdom:jdom:2.0.2")
+    compile('org.xerial:sqlite-jdbc:3.20.1')
 }
 
 test {
