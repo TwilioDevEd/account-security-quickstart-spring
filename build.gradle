@@ -13,11 +13,11 @@ buildscript {
 
 plugins {
     id "org.akhikhl.gretty" version "2.0.0"
+    id 'java'
+    id 'idea'
+    id 'war'
+    id 'groovy'
 }
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'war'
 
 //war {
 //    baseName = 'account-security-quickstart-spring'
@@ -47,10 +47,22 @@ configurations {
 }
 
 dependencies {
+    // Groovy
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+
+    // Spring
     compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVer}")
+    compile("org.springframework.boot:spring-boot-starter-security:${springBootVer}")
     compile 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.6.0'
-    compile("com.twilio.sdk:twilio:7.0.0-rc-29")
+
+    compile('com.authy:authy-java:1.2.0')
     compile('org.xerial:sqlite-jdbc:3.20.1')
+
+    testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVer}"
+    // Spock
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
+    testRuntime 'cglib:cglib-nodep:3.2.4'
 }
 
 test {

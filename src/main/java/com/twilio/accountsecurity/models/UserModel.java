@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "User")
-public class User {
+public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +17,32 @@ public class User {
 
     private String username;
     private String email;
-    private String authyId;
+    private Integer authyId;
     private String password;
+
+    public UserModel(Integer id, String username, String email, Integer authyId, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.authyId = authyId;
+        this.password = password;
+    }
+
+    public UserModel() {
+    }
+
+    public UserModel(String username, String email, Integer authyId, String password) {
+        this.username = username;
+        this.email = email;
+        this.authyId = authyId;
+        this.password = password;
+    }
+
+    public UserModel(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     public Integer getId() {
         return id;
@@ -33,15 +57,15 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        UserModel userModel = (UserModel) o;
 
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null)
+        if (id != null ? !id.equals(userModel.id) : userModel.id != null) return false;
+        if (username != null ? !username.equals(userModel.username) : userModel.username != null)
             return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (authyId != null ? !authyId.equals(user.authyId) : user.authyId != null)
+        if (email != null ? !email.equals(userModel.email) : userModel.email != null) return false;
+        if (authyId != null ? !authyId.equals(userModel.authyId) : userModel.authyId != null)
             return false;
-        return password != null ? password.equals(user.password) : user.password == null;
+        return password != null ? password.equals(userModel.password) : userModel.password == null;
     }
 
     @Override
@@ -70,11 +94,11 @@ public class User {
         this.email = email;
     }
 
-    public String getAuthyId() {
+    public Integer getAuthyId() {
         return authyId;
     }
 
-    public void setAuthyId(String authyId) {
+    public void setAuthyId(Integer authyId) {
         this.authyId = authyId;
     }
 
