@@ -19,6 +19,7 @@ public class UserModel {
     private String email;
     private Integer authyId;
     private String password;
+    private UserRoles role;
 
     public UserModel(Integer id, String username, String email, Integer authyId, String password) {
         this.id = id;
@@ -62,10 +63,13 @@ public class UserModel {
         if (id != null ? !id.equals(userModel.id) : userModel.id != null) return false;
         if (username != null ? !username.equals(userModel.username) : userModel.username != null)
             return false;
-        if (email != null ? !email.equals(userModel.email) : userModel.email != null) return false;
+        if (email != null ? !email.equals(userModel.email) : userModel.email != null)
+            return false;
         if (authyId != null ? !authyId.equals(userModel.authyId) : userModel.authyId != null)
             return false;
-        return password != null ? password.equals(userModel.password) : userModel.password == null;
+        if (password != null ? !password.equals(userModel.password) : userModel.password != null)
+            return false;
+        return role != null ? role.equals(userModel.role) : userModel.role == null;
     }
 
     @Override
@@ -75,6 +79,7 @@ public class UserModel {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (authyId != null ? authyId.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
         return result;
     }
 
@@ -84,6 +89,14 @@ public class UserModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public UserRoles getRole() {
+        return role;
+    }
+
+    public void setRole(UserRoles role) {
+        this.role = role;
     }
 
     public String getEmail() {

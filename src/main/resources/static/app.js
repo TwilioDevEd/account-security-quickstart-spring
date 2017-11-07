@@ -29,10 +29,10 @@ app.controller('RegistrationController', function ($scope, $http, $window) {
             // object we'll pass to the registration endpoint.
             $scope.setup.password = $scope.password1;
 
-            $http.post('/api/user/register', $scope.setup)
+            $http.post('/api/register', $scope.setup)
                 .success(function (data, status, headers, config) {
                     console.log("Success registering: ", data);
-                    $window.location.href = $window.location.origin + "/2fa";
+                    $window.location.href = $window.location.origin + "/2fa/index.html";
                 })
                 .error(function (data, status, headers, config) {
                     console.error("Registration error: ", data);

@@ -8,7 +8,7 @@ doc/
 .gradle/
 /bin/
 target/
- 
+classes/
 # OS Files #
 .DS_Store
 

@@ -7,6 +7,7 @@ import com.twilio.accountsecurity.controllers.UserRegisterRequest;
 import com.twilio.accountsecurity.daos.UserDao;
 import com.twilio.accountsecurity.exceptions.UserExistsException;
 import com.twilio.accountsecurity.models.UserModel;
+import com.twilio.accountsecurity.models.UserRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class RegisterService {
                 request.getCountryCode());
 
         UserModel newUserModel = request.toModel(passwordEncoder.encode(request.getPassword()));
-
+        newUserModel.setRole(UserRoles.ROLE_USER);
         newUserModel.setAuthyId(authyUser.getId());
         userDao.save(newUserModel);
     }

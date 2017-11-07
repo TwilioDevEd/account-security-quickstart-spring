@@ -1,5 +1,6 @@
 package com.twilio.accountsecurity.config;
 
+import com.twilio.accountsecurity.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,24 +15,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/").permitAll()
-            .and().csrf().disable()
-//            .anyRequest().authenticated()
-            .formLogin()
-            .loginPage("/login")
-            .permitAll()
-            .and()
-            .logout()
-            .permitAll();
+        http.csrf().disable().authorizeRequests()
+            .antMatchers("/", "/api/**").permitAll()
+            .anyRequest().authenticated()
+                .and()
+            .formLogin().loginPage("/login").permitAll()
+                .and()
+            .logout().permitAll();
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-            .withUser("user").password("password").roles("USER");
+    private MyUserDetailsService userDetailsService;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.userDetailsService(userDetailsService);
     }
+
 }
