@@ -4,6 +4,7 @@ import com.authy.AuthyApiClient;
 import com.authy.api.User;
 import com.twilio.accountsecurity.controllers.RegisterController;
 import com.twilio.accountsecurity.controllers.requests.UserRegisterRequest;
+import com.twilio.accountsecurity.exceptions.UserRegistrationException;
 import com.twilio.accountsecurity.repositories.UserRepository;
 import com.twilio.accountsecurity.exceptions.UserExistsException;
 import com.twilio.accountsecurity.models.UserModel;
@@ -35,7 +36,7 @@ public class RegisterService {
     public void register(UserRegisterRequest request) {
         UserModel userModel = userRepository.findFirstByUsername(request.getUsername());
 
-        if(userModel == null) {
+        if(userModel != null) {
             LOGGER.warn(String.format("User already exist: {}", request.getUsername()));
             throw new UserExistsException();
         }
@@ -44,6 +45,9 @@ public class RegisterService {
                 request.getPhoneNumber(),
                 request.getCountryCode());
 
+        if(authyUser.getError() != null) {
+            throw new UserRegistrationException(authyUser.getError().getMessage());
+        }
         UserModel newUserModel = request.toModel(passwordEncoder.encode(request.getPassword()));
         newUserModel.setRole(UserRoles.ROLE_USER);
         newUserModel.setAuthyId(authyUser.getId());

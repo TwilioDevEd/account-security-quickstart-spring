@@ -1,9 +1,11 @@
 package com.twilio.accountsecurity.services
 
 import com.authy.AuthyApiClient
+import com.authy.api.Error
 import com.authy.api.User
 import com.authy.api.Users
 import com.twilio.accountsecurity.controllers.requests.UserRegisterRequest
+import com.twilio.accountsecurity.exceptions.UserRegistrationException
 import com.twilio.accountsecurity.repositories.UserRepository
 import com.twilio.accountsecurity.exceptions.UserExistsException
 import com.twilio.accountsecurity.models.UserModel
@@ -40,6 +42,30 @@ class RegisterServiceSpec extends Specification {
         thrown UserExistsException
     }
 
+    def 'register should fail for Authy create failure'() {
+        given:
+        def authyUser = new User()
+        def error = new com.authy.api.Error()
+        error.message = 'authy error'
+        authyUser.setError(error)
+
+        def expectedUser = request.toModel()
+        expectedUser.setAuthyId(authyId)
+        expectedUser.setRole(UserRoles.ROLE_USER)
+        1 * userDao.findFirstByUsername(username) >> null
+        1 * authyApiClient.getUsers() >> users
+        1 * users.createUser(request.email, request.phoneNumber, request.countryCode) >>
+                authyUser
+        0 * userDao.save(_)
+
+        when:
+        service.register(request)
+
+        then:
+        UserRegistrationException e = thrown()
+        e.getMessage() == 'authy error'
+    }
+
     def 'register should save new user'() {
         given:
         def authyUser = new User()
@@ -48,10 +74,10 @@ class RegisterServiceSpec extends Specification {
         expectedUser.setAuthyId(authyId)
         expectedUser.setRole(UserRoles.ROLE_USER)
         1 * userDao.findFirstByUsername(username) >> null
-        1 * userDao.save(expectedUser)
         1 * authyApiClient.getUsers() >> users
         1 * users.createUser(request.email, request.phoneNumber, request.countryCode) >>
                 authyUser
+        1 * userDao.save(expectedUser)
 
         when:
         service.register(request)
