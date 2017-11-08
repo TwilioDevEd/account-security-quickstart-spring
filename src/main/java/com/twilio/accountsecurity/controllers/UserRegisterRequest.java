@@ -108,6 +108,7 @@ public class UserRegisterRequest {
     }
 
     public UserModel toModel(String encodedPassword) {
-        return new UserModel(getUsername(), getEmail(), encodedPassword);
+        return new UserModel(getUsername(), getEmail(), encodedPassword, getCountryCode(),
+                getPhoneNumber());
     }
 }

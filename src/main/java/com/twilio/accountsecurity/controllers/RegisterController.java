@@ -28,7 +28,8 @@ public class RegisterController {
     @RequestMapping(value = "/api/register",
             method = {RequestMethod.GET, RequestMethod.POST},
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity register(@Valid @RequestBody UserRegisterRequest newUserRequest, HttpServletRequest request) {
+    public ResponseEntity register(@Valid @RequestBody UserRegisterRequest newUserRequest,
+                                   HttpServletRequest request) {
         try {
             registerService.register(newUserRequest);
             request.login(newUserRequest.getUsername(), newUserRequest.getPassword());

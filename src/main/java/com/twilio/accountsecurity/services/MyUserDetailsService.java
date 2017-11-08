@@ -29,18 +29,17 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         LOGGER.info(username);
-        List<UserModel> users = userDao.findByUsername(username);
-        if (users == null || users.size() == 0) {
+        UserModel user = userDao.findFirstByUsername(username);
+        if (user == null) {
             throw new UsernameNotFoundException(
                     "No user found with username: "+ username);
         }
-        UserModel user = users.get(0);
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
         return  new User(
-                user.getEmail(),
+                user.getUsername(),
                 user.getPassword(),
                 enabled,
                 accountNonExpired,

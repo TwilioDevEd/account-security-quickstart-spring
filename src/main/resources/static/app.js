@@ -65,7 +65,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Request a token via SMS
      */
     $scope.sms = function () {
-        $http.post('/api/accountsecurity/sms')
+        $http.post('/api/token/sms')
             .success(function (data, status, headers, config) {
                 console.log("SMS sent: ", data);
             })
@@ -79,7 +79,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Request a Voice delivered token
      */
     $scope.voice = function () {
-        $http.post('/api/accountsecurity/voice')
+        $http.post('/api/token/voice')
             .success(function (data, status, headers, config) {
                 console.log("Phone call initialized: ", data);
             })
@@ -93,7 +93,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Verify a SMS, Voice or SoftToken
      */
     $scope.verify = function () {
-        $http.post('/api/accountsecurity/verify', {token: $scope.setup.token})
+        $http.post('/api/token/verify', {token: $scope.setup.token})
             .success(function (data, status, headers, config) {
                 console.log("2FA success ", data);
                 $window.location.href = $window.location.origin + "/protected";
@@ -108,7 +108,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Request a OneTouch transaction
      */
     $scope.onetouch = function () {
-        $http.post('/api/accountsecurity/onetouch')
+        $http.post('/api/token/onetouch')
             .success(function (data, status, headers, config) {
                 console.log("OneTouch success", data);
                 /**

@@ -1,4 +1,4 @@
-package com.twilio.accountsecurity
+package com.twilio.accountsecurity.services
 
 import com.authy.AuthyApiClient
 import com.authy.api.User
@@ -7,6 +7,7 @@ import com.twilio.accountsecurity.controllers.UserRegisterRequest
 import com.twilio.accountsecurity.daos.UserDao
 import com.twilio.accountsecurity.exceptions.UserExistsException
 import com.twilio.accountsecurity.models.UserModel
+import com.twilio.accountsecurity.models.UserRoles
 import com.twilio.accountsecurity.services.RegisterService
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
@@ -31,7 +32,7 @@ class RegisterServiceSpec extends Specification {
 
     def 'register should fail when the username already exist'() {
         given:
-        1 * userDao.findByUsername(username) >> [new UserModel()]
+        1 * userDao.findFirstByUsername(username) >> new UserModel()
 
         when:
         service.register(request)
@@ -46,7 +47,8 @@ class RegisterServiceSpec extends Specification {
         authyUser.setId(authyId)
         def expectedUser = request.toModel()
         expectedUser.setAuthyId(authyId)
-        1 * userDao.findByUsername(username) >> []
+        expectedUser.setRole(UserRoles.ROLE_USER)
+        1 * userDao.findFirstByUsername(username) >> null
         1 * userDao.save(expectedUser)
         1 * authyApiClient.getUsers() >> users
         1 * users.createUser(request.email, request.phoneNumber, request.countryCode) >>

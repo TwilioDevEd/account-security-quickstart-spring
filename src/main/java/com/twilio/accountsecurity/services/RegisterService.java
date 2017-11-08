@@ -35,9 +35,9 @@ public class RegisterService {
     }
 
     public void register(UserRegisterRequest request) {
-        List<UserModel> userModels = userDao.findByUsername(request.getUsername());
+        UserModel userModel = userDao.findFirstByUsername(request.getUsername());
 
-        if(userModels.size() > 0) {
+        if(userModel == null) {
             LOGGER.warn(String.format("User already exist: {}", request.getUsername()));
             throw new UserExistsException();
         }

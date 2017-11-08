@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface UserDao extends CrudRepository<UserModel, Integer> {
 
-    List<UserModel> findByUsername(String username);
-
+    UserModel findFirstByUsername(String username);
 }
