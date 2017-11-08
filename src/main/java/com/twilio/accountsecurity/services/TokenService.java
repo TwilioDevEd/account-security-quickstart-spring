@@ -3,7 +3,7 @@ package com.twilio.accountsecurity.services;
 import com.authy.AuthyApiClient;
 import com.authy.OneTouchException;
 import com.authy.api.*;
-import com.twilio.accountsecurity.daos.UserDao;
+import com.twilio.accountsecurity.repositories.UserRepository;
 import com.twilio.accountsecurity.exceptions.TokenVerificationException;
 import com.twilio.accountsecurity.models.UserModel;
 import org.slf4j.Logger;
@@ -17,12 +17,12 @@ public class TokenService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenService.class);
 
     private AuthyApiClient authyClient;
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Autowired
-    public TokenService(AuthyApiClient authyClient, UserDao userDao) {
+    public TokenService(AuthyApiClient authyClient, UserRepository userRepository) {
         this.authyClient = authyClient;
-        this.userDao = userDao;
+        this.userRepository = userRepository;
     }
 
 
@@ -34,7 +34,7 @@ public class TokenService {
     }
 
     public void sendVoiceToken(String username) {
-        UserModel user = userDao.findFirstByUsername(username);
+        UserModel user = userRepository.findFirstByUsername(username);
 
         Verification verification = authyClient.getPhoneVerification().start(user.getPhoneNumber(),
                 user.getCountryCode(),
@@ -46,7 +46,7 @@ public class TokenService {
     }
 
     public void sendOneTouchToken(String username) {
-        UserModel user = userDao.findFirstByUsername(username);
+        UserModel user = userRepository.findFirstByUsername(username);
 
         try {
             ApprovalRequestParams params = new ApprovalRequestParams
@@ -73,7 +73,7 @@ public class TokenService {
     }
 
     private Integer getUserAuthyId(String username) {
-        UserModel user = userDao.findFirstByUsername(username);
+        UserModel user = userRepository.findFirstByUsername(username);
         return user.getAuthyId();
     }
 

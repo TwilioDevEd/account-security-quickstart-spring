@@ -1,6 +1,6 @@
 package com.twilio.accountsecurity.services;
 
-import com.twilio.accountsecurity.daos.UserDao;
+import com.twilio.accountsecurity.repositories.UserRepository;
 import com.twilio.accountsecurity.models.UserModel;
 import com.twilio.accountsecurity.models.UserRoles;
 import org.slf4j.Logger;
@@ -24,12 +24,12 @@ public class MyUserDetailsService implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MyUserDetailsService.class);
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         LOGGER.info(username);
-        UserModel user = userDao.findFirstByUsername(username);
+        UserModel user = userRepository.findFirstByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(
                     "No user found with username: "+ username);

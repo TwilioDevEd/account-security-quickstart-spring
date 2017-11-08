@@ -1,11 +1,9 @@
-package com.twilio.accountsecurity.daos;
+package com.twilio.accountsecurity.repositories;
 
 import com.twilio.accountsecurity.models.UserModel;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-
-public interface UserDao extends CrudRepository<UserModel, Integer> {
+public interface UserRepository extends CrudRepository<UserModel, Integer> {
 
     UserModel findFirstByUsername(String username);
 }

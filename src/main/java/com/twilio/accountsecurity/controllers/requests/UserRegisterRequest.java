@@ -1,4 +1,4 @@
-package com.twilio.accountsecurity.controllers;
+package com.twilio.accountsecurity.controllers.requests;
 
 import com.twilio.accountsecurity.models.UserModel;
 

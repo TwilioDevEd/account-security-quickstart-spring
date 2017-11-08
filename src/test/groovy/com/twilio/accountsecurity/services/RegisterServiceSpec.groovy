@@ -3,12 +3,11 @@ package com.twilio.accountsecurity.services
 import com.authy.AuthyApiClient
 import com.authy.api.User
 import com.authy.api.Users
-import com.twilio.accountsecurity.controllers.UserRegisterRequest
-import com.twilio.accountsecurity.daos.UserDao
+import com.twilio.accountsecurity.controllers.requests.UserRegisterRequest
+import com.twilio.accountsecurity.repositories.UserRepository
 import com.twilio.accountsecurity.exceptions.UserExistsException
 import com.twilio.accountsecurity.models.UserModel
 import com.twilio.accountsecurity.models.UserRoles
-import com.twilio.accountsecurity.services.RegisterService
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 import spock.lang.Subject
@@ -18,7 +17,7 @@ class RegisterServiceSpec extends Specification {
     @Subject RegisterService service
 
     PasswordEncoder passwordEncoder = Mock()
-    UserDao userDao = Mock()
+    UserRepository userDao = Mock()
     AuthyApiClient authyApiClient = Mock()
     Users users = Mock()
 

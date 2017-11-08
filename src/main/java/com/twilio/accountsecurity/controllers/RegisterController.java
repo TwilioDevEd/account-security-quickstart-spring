@@ -1,5 +1,6 @@
 package com.twilio.accountsecurity.controllers;
 
+import com.twilio.accountsecurity.controllers.requests.UserRegisterRequest;
 import com.twilio.accountsecurity.exceptions.UserExistsException;
 import com.twilio.accountsecurity.services.RegisterService;
 import org.slf4j.Logger;
