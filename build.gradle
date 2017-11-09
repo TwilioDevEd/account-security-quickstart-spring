@@ -29,6 +29,12 @@ targetCompatibility = 1.8
 ext['logbackVersion'] = '1.1.11'
 ext['springBootVer'] = '1.5.7.RELEASE'
 
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
 repositories {
     jcenter()
     mavenCentral()
@@ -55,7 +61,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security:${springBootVer}")
     compile 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.6.0'
 
-    compile('com.authy:authy-java:1.2.0')
+    // Fetching master until we have a new release
+    compile 'com.github.authy:authy-java:master-SNAPSHOT'
+//    compile('com.authy:authy-java:1.2.0')
     compile('org.xerial:sqlite-jdbc:3.20.1')
 
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVer}"

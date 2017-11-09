@@ -96,7 +96,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
         $http.post('/api/token/verify', {token: $scope.setup.token})
             .success(function (data, status, headers, config) {
                 console.log("2FA success ", data);
-                $window.location.href = $window.location.origin + "/protected";
+                $window.location.href = $window.location.origin + "/protected/index.html";
             })
             .error(function (data, status, headers, config) {
                 console.error("Verify error: ", data);

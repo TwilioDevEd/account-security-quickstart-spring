@@ -20,8 +20,8 @@ import java.util.List;
 
 @Service
 @Transactional
-public class MyUserDetailsService implements UserDetailsService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MyUserDetailsService.class);
+public class UserDetailsServiceImpl implements UserDetailsService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;

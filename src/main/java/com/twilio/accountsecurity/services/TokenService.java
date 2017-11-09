@@ -3,6 +3,7 @@ package com.twilio.accountsecurity.services;
 import com.authy.AuthyApiClient;
 import com.authy.OneTouchException;
 import com.authy.api.*;
+import com.twilio.accountsecurity.controllers.requests.VerifyTokenRequest;
 import com.twilio.accountsecurity.repositories.UserRepository;
 import com.twilio.accountsecurity.exceptions.TokenVerificationException;
 import com.twilio.accountsecurity.models.UserModel;
@@ -36,11 +37,8 @@ public class TokenService {
     public void sendVoiceToken(String username) {
         UserModel user = userRepository.findFirstByUsername(username);
 
-        Verification verification = authyClient.getPhoneVerification().start(user.getPhoneNumber(),
-                user.getCountryCode(),
-                "call",
-                new Params());
-        if(!verification.isOk()) {
+        Hash hash = authyClient.getUsers().requestCall(user.getAuthyId());
+        if(!hash.isOk()) {
             logAndThrow("Problem sending the token on a call");
         }
     }
@@ -67,15 +65,23 @@ public class TokenService {
         }
     }
 
+    public void verify(String username, VerifyTokenRequest requestBody) {
+        Token token = authyClient.getTokens().verify(getUserAuthyId(username),
+                requestBody.getToken());
+
+        if(!token.isOk()) {
+            logAndThrow("Token verification failed");
+        }
+    }
+
     private void logAndThrow(String message) {
         LOGGER.warn(message);
         throw new TokenVerificationException(message);
     }
 
+
     private Integer getUserAuthyId(String username) {
         UserModel user = userRepository.findFirstByUsername(username);
         return user.getAuthyId();
     }
-
-
 }

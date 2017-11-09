@@ -11,6 +11,7 @@ target/
 classes/
 # OS Files #
 .DS_Store
+.env
 
 # JetBrain's Idea specific stuff #
 

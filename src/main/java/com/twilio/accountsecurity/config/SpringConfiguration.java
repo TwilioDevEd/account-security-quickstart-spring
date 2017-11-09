@@ -26,6 +26,7 @@ public class SpringConfiguration {
     public AuthyApiClient authyApiClient() {
         return new AuthyApiClient(settings.getAuthyId());
     }
+
     @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
