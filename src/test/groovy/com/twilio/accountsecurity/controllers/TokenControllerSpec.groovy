@@ -1,10 +1,13 @@
 package com.twilio.accountsecurity.controllers
 
+import com.twilio.accountsecurity.controllers.requests.VerifyTokenRequest
 import com.twilio.accountsecurity.exceptions.TokenVerificationException
 import com.twilio.accountsecurity.services.TokenService
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpSession
 import java.security.Principal
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -112,5 +115,79 @@ class TokenControllerSpec extends Specification {
 
         then:
         response.status == 200
+    }
+
+    def 'onetouchstatus - return 200 for status true'() {
+        given:
+        def session = Mock(HttpSession)
+        def request = Mock(HttpServletRequest)
+        1 * request.getSession() >> session
+        1 * session.getAttribute('onetouchUUID') >> 'uuid'
+        1 * tokenService.retrieveOneTouchStatus('uuid') >> true
+        1 * session.setAttribute('authy', true)
+
+        when:
+        def response = tokenController.oneTouchStatus(request)
+
+        then:
+        response.statusCode.value() == 200
+        response.body == true
+    }
+
+    def 'onetouchstatus - return 500 for TokenVerificationException'() {
+        given:
+        def session = Mock(HttpSession)
+        def request = Mock(HttpServletRequest)
+        1 * request.getSession() >> session
+        1 * session.getAttribute('onetouchUUID') >> 'uuid'
+        1 * tokenService.retrieveOneTouchStatus('uuid') >> {
+            throw new TokenVerificationException('message')}
+
+        when:
+        def response = tokenController.oneTouchStatus(request)
+
+        then:
+        response.statusCode.value() == 500
+        response.body == 'message'
+    }
+
+    def 'verify - returns 200'() {
+        given:
+        def requestBody = new VerifyTokenRequest('token')
+        def session = Mock(HttpSession)
+        def request = Mock(HttpServletRequest)
+        def principal = Mock(Principal)
+        1 * request.getUserPrincipal() >> principal
+        1 * principal.getName() >> username
+        1 * request.getSession() >> session
+        1 * tokenService.verify(username, requestBody)
+        1 * session.setAttribute('authy', true)
+
+        when:
+        def response = tokenController.verify(requestBody, request)
+
+        then:
+        response.statusCode.value() == 200
+    }
+
+    def 'verify - returns 400 for failed verification'() {
+        given:
+        def requestBody = new VerifyTokenRequest('token')
+        def session = Mock(HttpSession)
+        def request = Mock(HttpServletRequest)
+        def principal = Mock(Principal)
+        1 * request.getUserPrincipal() >> principal
+        1 * principal.getName() >> username
+        0 * request.getSession() >> session
+        1 * tokenService.verify(username, requestBody) >>
+                {throw new TokenVerificationException('message')}
+        0 * session.setAttribute('authy', true)
+
+        when:
+        def response = tokenController.verify(requestBody, request)
+
+        then:
+        response.statusCode.value() == 400
+        response.body == 'message'
     }
 }

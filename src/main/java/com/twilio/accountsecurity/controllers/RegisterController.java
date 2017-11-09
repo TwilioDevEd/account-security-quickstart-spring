@@ -23,8 +23,12 @@ public class RegisterController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 
-    @Autowired
     private RegisterService registerService;
+
+    @Autowired
+    public RegisterController(RegisterService registerService) {
+        this.registerService = registerService;
+    }
 
     @RequestMapping(value = "/api/register",
             method = {RequestMethod.GET, RequestMethod.POST},
@@ -36,7 +40,8 @@ public class RegisterController {
             request.login(newUserRequest.getUsername(), newUserRequest.getPassword());
             return ResponseEntity.ok().build();
         } catch (UserExistsException e) {
-            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED)
+                    .body("User already exists");
         } catch (ServletException e) {
             LOGGER.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

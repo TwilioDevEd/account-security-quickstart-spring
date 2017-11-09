@@ -52,9 +52,10 @@ public class TokenController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity oneTouchStatus(HttpServletRequest request) {
         try {
+            HttpSession session = request.getSession();
             boolean status = tokenService.retrieveOneTouchStatus(
-                    (String) request.getSession().getAttribute("onetouchUUID"));
-            request.getSession().setAttribute("authy", status);
+                    (String) session.getAttribute("onetouchUUID"));
+            session.setAttribute("authy", status);
             return ResponseEntity.ok(status);
         } catch (TokenVerificationException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -66,10 +67,14 @@ public class TokenController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity verify(@Valid @RequestBody VerifyTokenRequest requestBody,
                                  HttpServletRequest request) {
-        return runWithCatch(() -> {
+        try {
             tokenService.verify(request.getUserPrincipal().getName(), requestBody);
             request.getSession().setAttribute("authy", true);
-        });
+            return ResponseEntity.ok().build();
+        } catch (TokenVerificationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     private ResponseEntity<? extends Object> runWithCatch(Runnable runnable) {
