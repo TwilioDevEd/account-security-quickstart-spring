@@ -8,7 +8,7 @@ app.controller('LoginController', function ($scope, $http, $window) {
         $http.post('/api/login', $scope.setup)
             .success(function (data, status, headers, config) {
                 console.log("Login success: ", data);
-                $window.location.href = $window.location.origin + "/2fa";
+                $window.location.href = $window.location.origin + "/2fa/index.html";
             })
             .error(function (data, status, headers, config) {
                 console.error("Login error: ", data);
