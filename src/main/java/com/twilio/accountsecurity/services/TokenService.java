@@ -28,7 +28,10 @@ public class TokenService {
 
 
     public void sendSmsToken(String username) {
-        Hash hash = authyClient.getUsers().requestSms(getUserAuthyId(username));
+        Hash hash = authyClient
+                .getUsers()
+                .requestSms(getUserAuthyId(username));
+
         if(!hash.isOk()) {
             logAndThrow("Problem sending token over SMS");
         }
@@ -43,7 +46,7 @@ public class TokenService {
         }
     }
 
-    public void sendOneTouchToken(String username) {
+    public String sendOneTouchToken(String username) {
         UserModel user = userRepository.findFirstByUsername(username);
 
         try {
@@ -55,30 +58,48 @@ public class TokenService {
                     .addDetail("Location", "San Francisco, CA")
                     .addDetail("Reason", "Demo by Account Security")
                     .build();
-            OneTouchResponse response = authyClient.getOneTouch()
+            OneTouchResponse response = authyClient
+                    .getOneTouch()
                     .sendApprovalRequest(params);
+
             if(!response.isSuccess()) {
                 logAndThrow("Problem sending the token with OneTouch");
             }
+            return response.getApprovalRequest().getUUID();
         } catch (OneTouchException e) {
             logAndThrow("Problem sending the token with OneTouch: " + e.getMessage());
         }
+        return null;
     }
 
     public void verify(String username, VerifyTokenRequest requestBody) {
-        Token token = authyClient.getTokens().verify(getUserAuthyId(username),
-                requestBody.getToken());
+        Token token = authyClient
+                .getTokens()
+                .verify(getUserAuthyId(username), requestBody.getToken());
 
         if(!token.isOk()) {
             logAndThrow("Token verification failed");
         }
     }
 
+    public boolean retrieveOneTouchStatus(String uuid) {
+        try {
+            return authyClient
+                    .getOneTouch()
+                    .getApprovalRequestStatus(uuid)
+                    .getApprovalRequest()
+                    .getStatus()
+                    .equals("approved");
+        } catch (OneTouchException e) {
+            logAndThrow(e.getMessage());
+        }
+        return false;
+    }
+
     private void logAndThrow(String message) {
         LOGGER.warn(message);
         throw new TokenVerificationException(message);
     }
-
 
     private Integer getUserAuthyId(String username) {
         UserModel user = userRepository.findFirstByUsername(username);

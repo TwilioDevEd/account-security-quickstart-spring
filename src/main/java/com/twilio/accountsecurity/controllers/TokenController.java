@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.function.Consumer;
 
 @RestController
 @RequestMapping(value = "/api/token")
@@ -30,38 +29,52 @@ public class TokenController {
 
     @RequestMapping(value = "sms", method = RequestMethod.POST)
     public ResponseEntity sms(HttpServletRequest request) {
-        return sendToken(request, (user) -> tokenService.sendSmsToken(user));
+        return runWithCatch(() ->
+                tokenService.sendSmsToken(request.getUserPrincipal().getName()));
     }
 
     @RequestMapping(value = "voice", method = RequestMethod.POST)
     public ResponseEntity voice(HttpServletRequest request) {
-        return sendToken(request, (user) -> tokenService.sendVoiceToken(user));
+        return runWithCatch(() ->
+                tokenService.sendVoiceToken(request.getUserPrincipal().getName()));
     }
 
     @RequestMapping(value = "onetouch", method = RequestMethod.POST)
-    public ResponseEntity onetouch(HttpServletRequest request) {
-        return sendToken(request, (user) -> tokenService.sendOneTouchToken(user));
+    public ResponseEntity oneTouch(HttpServletRequest request) {
+        return runWithCatch(() -> {
+            String uuid = tokenService.sendOneTouchToken(request.getUserPrincipal()
+                    .getName());
+            request.getSession().setAttribute("onetouchUUID", uuid);
+        });
     }
 
-    @RequestMapping(value = "verify", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity verify(@Valid @RequestBody VerifyTokenRequest requestBody,
-                                 HttpServletRequest request, HttpSession session) {
+    @RequestMapping(value = "onetouchstatus", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity oneTouchStatus(HttpServletRequest request) {
         try {
-            tokenService.verify(request.getUserPrincipal().getName(), requestBody);
-            session.setAttribute("authy", true);
-
-            return ResponseEntity.ok().build();
+            boolean status = tokenService.retrieveOneTouchStatus(
+                    (String) request.getSession().getAttribute("onetouchUUID"));
+            request.getSession().setAttribute("authy", status);
+            return ResponseEntity.ok(status);
         } catch (TokenVerificationException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
         }
     }
 
-    private ResponseEntity<? extends Object> sendToken(HttpServletRequest request,
-                                                       Consumer<String> consumer) {
+    @RequestMapping(value = "verify", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity verify(@Valid @RequestBody VerifyTokenRequest requestBody,
+                                 HttpServletRequest request) {
+        return runWithCatch(() -> {
+            tokenService.verify(request.getUserPrincipal().getName(), requestBody);
+            request.getSession().setAttribute("authy", true);
+        });
+    }
+
+    private ResponseEntity<? extends Object> runWithCatch(Runnable runnable) {
         try {
-            consumer.accept(request.getUserPrincipal().getName());
+            runnable.run();
             return ResponseEntity.ok().build();
         } catch (TokenVerificationException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

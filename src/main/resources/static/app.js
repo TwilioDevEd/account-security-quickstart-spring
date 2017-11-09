@@ -126,7 +126,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Request the OneTouch status.
      */
     function oneTouchStatus() {
-        $http.post('/api/accountsecurity/onetouchstatus')
+        $http.post('/api/token/onetouchstatus')
             .success(function (data, status, headers, config) {
                 console.log("OneTouch Status: ", data);
                 if (data.body.approval_request.status === "approved") {
