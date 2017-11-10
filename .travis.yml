@@ -1,0 +1,6 @@
+language: java
+jdk:
+- oraclejdk8
+env:
+  global:
+  - ACCOUNT_SECURITY_API_KEY=YOUR-AUTHY-API-KEY
