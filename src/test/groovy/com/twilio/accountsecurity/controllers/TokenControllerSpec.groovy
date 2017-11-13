@@ -5,6 +5,7 @@ import com.twilio.accountsecurity.exceptions.TokenVerificationException
 import com.twilio.accountsecurity.services.TokenService
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
+import spock.lang.Subject
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
@@ -15,7 +16,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 class TokenControllerSpec extends Specification {
     def tokenService = Mock(TokenService)
-    def tokenController = new TokenController(tokenService)
+    @Subject def tokenController = new TokenController(tokenService)
 
     MockMvc mockMvc = standaloneSetup(tokenController).build()
 

@@ -10,6 +10,7 @@ import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.RequestPostProcessor
 import spock.lang.Specification
+import spock.lang.Subject
 
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 class RegisterControllerSpec extends Specification {
     def registerService = Mock(RegisterService)
     def request = Mock(HttpServletRequest)
-    def registerController = new RegisterController(registerService)
+    @Subject def registerController = new RegisterController(registerService)
 
     MockMvc mockMvc = standaloneSetup(registerController).build()
 
