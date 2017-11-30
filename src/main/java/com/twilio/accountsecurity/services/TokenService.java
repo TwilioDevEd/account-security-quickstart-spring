@@ -33,7 +33,7 @@ public class TokenService {
                 .requestSms(getUserAuthyId(username));
 
         if(!hash.isOk()) {
-            logAndThrow("Problem sending token over SMS");
+            logAndThrow("Problem sending token over SMS. " + hash.getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ public class TokenService {
 
         Hash hash = authyClient.getUsers().requestCall(user.getAuthyId());
         if(!hash.isOk()) {
-            logAndThrow("Problem sending the token on a call");
+            logAndThrow("Problem sending the token on a call. " + hash.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ public class TokenService {
                 .verify(getUserAuthyId(username), requestBody.getToken());
 
         if(!token.isOk()) {
-            logAndThrow("Token verification failed");
+            logAndThrow("Token verification failed. " + token.getError().toString());
         }
     }
 
