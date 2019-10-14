@@ -55,7 +55,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security:${springBootVer}")
     compile 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.6.0'
 
-    compile('com.authy:authy-java:1.2.0')
+    compile('com.authy:authy-java:1.5.1')
     compile('org.xerial:sqlite-jdbc:3.20.1')
 
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVer}"
