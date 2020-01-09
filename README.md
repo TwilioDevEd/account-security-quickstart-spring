@@ -28,5 +28,9 @@ It uses four channels for delivery, SMS, Voice, Soft Tokens, and Push Authentica
 - Load the configuration with `source .env`
 - Run `gradle appRun` from the cloned repo to run the app
 
-### License
-- MIT
+
+## Meta
+
+* No warranty expressed or implied. Software is as is. Diggity.
+* [MIT License](http://www.opensource.org/licenses/mit-license.html)
+* Lovingly crafted by Twilio Developer Education.
