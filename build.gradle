@@ -48,7 +48,7 @@ configurations {
 
 dependencies {
     // Groovy
-    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile 'org.codehaus.groovy:groovy-all:2.5.9'
 
     // Spring
     compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVer}")
