@@ -28,7 +28,7 @@ class PhoneVerificationServiceSpec extends Specification {
     def "start - success"() {
         given:
         1 * phoneVerification.start(phone, countryCode, via, _ as Params) >>
-                new Verification(200, '', '')
+                new Verification(200, '{}', '')
 
         when:
         phoneVerificationService.start(countryCode, phone, via)
@@ -40,7 +40,7 @@ class PhoneVerificationServiceSpec extends Specification {
     def "start - error"() {
         given:
         1 * phoneVerification.start(phone, countryCode, via, _ as Params) >>
-                new Verification(400, '', '')
+                new Verification(400, '{}', '')
 
         when:
         phoneVerificationService.start(countryCode, phone, via)
@@ -53,7 +53,7 @@ class PhoneVerificationServiceSpec extends Specification {
     def "verify - success"() {
         given:
         1 * phoneVerification.check(phone, countryCode, token) >>
-                new Verification(200, '', '')
+                new Verification(200, '{}', '')
 
         when:
         phoneVerificationService.verify(countryCode, phone, token)
@@ -65,7 +65,7 @@ class PhoneVerificationServiceSpec extends Specification {
     def "verify - error"() {
         given:
         1 * phoneVerification.check(phone, countryCode, token) >>
-                new Verification(400, '', '')
+                new Verification(400, '{}', '')
 
         when:
         phoneVerificationService.verify(countryCode, phone, token)

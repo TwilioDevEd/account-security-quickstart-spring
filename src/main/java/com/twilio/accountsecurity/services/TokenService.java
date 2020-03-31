@@ -1,6 +1,7 @@
 package com.twilio.accountsecurity.services;
 
 import com.authy.AuthyApiClient;
+import com.authy.AuthyException;
 import com.authy.OneTouchException;
 import com.authy.api.*;
 import com.twilio.accountsecurity.controllers.requests.VerifyTokenRequest;
@@ -27,7 +28,7 @@ public class TokenService {
     }
 
 
-    public void sendSmsToken(String username) {
+    public void sendSmsToken(String username) throws AuthyException {
         Hash hash = authyClient
                 .getUsers()
                 .requestSms(getUserAuthyId(username));
@@ -37,7 +38,7 @@ public class TokenService {
         }
     }
 
-    public void sendVoiceToken(String username) {
+    public void sendVoiceToken(String username) throws AuthyException {
         UserModel user = userRepository.findFirstByUsername(username);
 
         Hash hash = authyClient.getUsers().requestCall(user.getAuthyId());
@@ -46,7 +47,7 @@ public class TokenService {
         }
     }
 
-    public String sendOneTouchToken(String username) {
+    public String sendOneTouchToken(String username) throws AuthyException {
         UserModel user = userRepository.findFirstByUsername(username);
 
         try {
@@ -72,7 +73,7 @@ public class TokenService {
         return null;
     }
 
-    public void verify(String username, VerifyTokenRequest requestBody) {
+    public void verify(String username, VerifyTokenRequest requestBody) throws AuthyException {
         Token token = authyClient
                 .getTokens()
                 .verify(getUserAuthyId(username), requestBody.getToken());

@@ -1,19 +1,6 @@
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        mavenCentral()
-
-    }
-    dependencies {
-        classpath "gradle.plugin.org.akhikhl.gretty:gretty:2.0.0"
-    }
-}
-
 plugins {
-    id "org.akhikhl.gretty" version "2.0.0"
     id 'java'
+    id 'org.gretty' version '3.0.1'
     id 'idea'
     id 'war'
     id 'groovy'
@@ -27,18 +14,17 @@ plugins {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 ext['logbackVersion'] = '1.1.11'
-ext['springBootVer'] = '1.5.7.RELEASE'
+ext['springBootVer'] = '2.2.6.RELEASE'
 
 
 repositories {
-    mavenCentral()
-    maven { url 'http://repo.spring.io/release' }
+    jcenter()
 }
 
 gretty {
-    springBootVersion = '1.5.7.RELEASE'
+    springBootVersion = '2.2.6.RELEASE'
     springBoot = true
-    servletContainer = 'jetty9'
+    servletContainer = 'jetty9.4'
     contextPath = ''
 }
 
@@ -47,25 +33,30 @@ configurations {
 }
 
 dependencies {
+    implementation(group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1')
+    implementation(group: 'javax.el', name:'javax.el-api', version:'2.2.5')
     // Groovy
-    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    implementation(group:'org.codehaus.groovy', name:'groovy-all', version:'3.0.2')
 
     // Spring
-    compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVer}")
-    compile("org.springframework.boot:spring-boot-starter-security:${springBootVer}")
-    compile 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.6.0'
+    implementation(group:'org.springframework.boot', name:'spring-boot-starter-data-jpa', version:"${springBootVer}")
+    implementation(group:'org.springframework.boot', name:'spring-boot-starter-security', version:"${springBootVer}")
+    implementation(group:'net.rakugakibox.spring.boot', name:'logback-access-spring-boot-starter', version:'2.7.1')
 
-    compile('com.authy:authy-java:1.2.0')
-    compile('org.xerial:sqlite-jdbc:3.20.1')
+    implementation(group:'com.authy', name:'authy-java', version:'1.5.1')
+    implementation(group:'org.xerial', name:'sqlite-jdbc', version:'3.30.1')
 
-    testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVer}"
+    testImplementation(group: 'junit', name:'junit', version:'4.13')
+    testImplementation(group:'org.springframework.boot', name:'spring-boot-starter-test', version:"${springBootVer}")
+    
     // Spock
-    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
-    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
-    testRuntime 'cglib:cglib-nodep:3.2.4'
+    testImplementation(group:'org.spockframework', name:'spock-core', version:'2.0-M2-groovy-3.0')
+    testImplementation(group:'org.spockframework', name:'spock-spring', version:'2.0-M2-groovy-3.0')
+    testRuntime(group:'cglib', name:'cglib-nodep', version:'3.3.0')
 }
 
 test {
+    useJUnitPlatform()
     reports {
         junitXml.enabled = false
         html.enabled = false

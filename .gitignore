@@ -12,6 +12,7 @@ classes/
 # OS Files #
 .DS_Store
 .env
+.vscode
 
 # JetBrain's Idea specific stuff #
 
@@ -64,9 +65,7 @@ fabric.properties
 
 *.class
 browscap.csv
-gradle/wrapper
-gradlew.bat
-gradlew
+!gradle/wrapper/gradle-wrapper.jar
 
 # Package Files #
 *.jar

@@ -1,6 +1,7 @@
 package com.twilio.accountsecurity.services;
 
 import com.authy.AuthyApiClient;
+import com.authy.AuthyException;
 import com.authy.api.User;
 import com.twilio.accountsecurity.controllers.RegisterController;
 import com.twilio.accountsecurity.controllers.requests.UserRegisterRequest;
@@ -33,7 +34,7 @@ public class RegisterService {
         this.authyClient = authyClient;
     }
 
-    public void register(UserRegisterRequest request) {
+    public void register(UserRegisterRequest request) throws AuthyException {
         UserModel userModel = userRepository.findFirstByUsername(request.getUsername());
 
         if(userModel != null) {

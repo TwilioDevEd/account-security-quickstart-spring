@@ -27,7 +27,7 @@ public class PhoneVerificationController implements BaseController {
 
     @RequestMapping(path = "start", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity start(@Valid @RequestBody PhoneVerificationStartRequest requestBody) {
+    public ResponseEntity<?> start(@Valid @RequestBody PhoneVerificationStartRequest requestBody) {
         return runWithCatch(() -> {
             phoneVerificationService.start(requestBody.getCountryCode(),
                     requestBody.getPhoneNumber(),
@@ -36,7 +36,7 @@ public class PhoneVerificationController implements BaseController {
     }
 
     @RequestMapping(path = "verify", method = RequestMethod.POST)
-    public ResponseEntity verify(@Valid @RequestBody PhoneVerificationVerifyRequest requestBody,
+    public ResponseEntity<?> verify(@Valid @RequestBody PhoneVerificationVerifyRequest requestBody,
                                  HttpSession session) {
         return runWithCatch(() -> {
             phoneVerificationService.verify(requestBody.getCountryCode(),

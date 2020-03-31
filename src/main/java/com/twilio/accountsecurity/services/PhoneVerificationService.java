@@ -1,6 +1,7 @@
 package com.twilio.accountsecurity.services;
 
 import com.authy.AuthyApiClient;
+import com.authy.AuthyException;
 import com.authy.api.Params;
 import com.authy.api.Verification;
 import com.twilio.accountsecurity.exceptions.TokenVerificationException;
@@ -21,7 +22,7 @@ public class PhoneVerificationService {
         this.authyApiClient = authyApiClient;
     }
 
-    public void start(String countryCode, String phoneNumber, String via) {
+    public void start(String countryCode, String phoneNumber, String via) throws AuthyException {
         Params params = new Params();
         params.setAttribute("code_length", "4");
         Verification verification = authyApiClient
@@ -34,7 +35,7 @@ public class PhoneVerificationService {
         }
     }
 
-    public void verify(String countryCode, String phoneNumber, String token) {
+    public void verify(String countryCode, String phoneNumber, String token) throws AuthyException {
         Verification verification = authyApiClient
                 .getPhoneVerification()
                 .check(phoneNumber, countryCode, token);

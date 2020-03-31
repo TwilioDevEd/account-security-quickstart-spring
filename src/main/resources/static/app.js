@@ -5,7 +5,7 @@ app.controller('LoginController', function ($scope, $http, $window) {
     $scope.setup = {};
 
     $scope.login = function () {
-        $http.post('/api/login', $scope.setup)
+        $http.post('/api/login', $scope.setup, { responseType: 'text' })
             .success(function (data, status, headers, config) {
                 console.log("Login success: ", data);
                 $window.location.href = $window.location.origin + "/2fa/index.html";
@@ -29,7 +29,7 @@ app.controller('RegistrationController', function ($scope, $http, $window) {
             // object we'll pass to the registration endpoint.
             $scope.setup.password = $scope.password1;
 
-            $http.post('/api/register', $scope.setup)
+            $http.post('/api/register', $scope.setup, { responseType: 'text'})
                 .success(function (data, status, headers, config) {
                     console.log("Success registering: ", data);
                     $window.location.href = $window.location.origin + "/2fa/index.html";
@@ -65,7 +65,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Request a token via SMS
      */
     $scope.sms = function () {
-        $http.post('/api/token/sms')
+        $http.post('/api/token/sms', null, { responseType: 'text' })
             .success(function (data, status, headers, config) {
                 console.log("SMS sent: ", data);
             })
@@ -79,7 +79,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Request a Voice delivered token
      */
     $scope.voice = function () {
-        $http.post('/api/token/voice')
+        $http.post('/api/token/voice', null, { responseType: 'text' })
             .success(function (data, status, headers, config) {
                 console.log("Phone call initialized: ", data);
             })
@@ -93,7 +93,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Verify a SMS, Voice or SoftToken
      */
     $scope.verify = function () {
-        $http.post('/api/token/verify', {token: $scope.setup.token})
+        $http.post('/api/token/verify', { token: $scope.setup.token }, { responseType: 'text' })
             .success(function (data, status, headers, config) {
                 console.log("2FA success ", data);
                 $window.location.href = $window.location.origin + "/protected/index.html";
@@ -108,7 +108,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Request a OneTouch transaction
      */
     $scope.onetouch = function () {
-        $http.post('/api/token/onetouch')
+        $http.post('/api/token/onetouch', null, { responseType: 'text' })
             .success(function (data, status, headers, config) {
                 console.log("OneTouch success", data);
                 /**
@@ -126,7 +126,7 @@ app.controller('AuthyController', function ($scope, $http, $window, $interval) {
      * Request the OneTouch status.
      */
     function oneTouchStatus() {
-        $http.post('/api/token/onetouchstatus')
+        $http.post('/api/token/onetouchstatus', null, { responseType: 'text' })
             .success(function (data, status, headers, config) {
                 console.log("OneTouch Status: ", data);
                 if (data.body.approval_request.status === "approved") {
@@ -158,7 +158,7 @@ app.controller('PhoneVerificationController', function ($scope, $http, $window, 
      * Initialize Phone Verification
      */
     $scope.startVerification = function () {
-        $http.post('/api/phone-verification/start', $scope.setup)
+        $http.post('/api/phone-verification/start', $scope.setup, { responseType: 'text' })
             .success(function (data, status, headers, config) {
                 $scope.view.start = false;
                 console.log("Verification started: ", data);
@@ -172,7 +172,7 @@ app.controller('PhoneVerificationController', function ($scope, $http, $window, 
      * Verify phone token
      */
     $scope.verifyToken = function () {
-        $http.post('/api/phone-verification/verify', $scope.setup)
+        $http.post('/api/phone-verification/verify', $scope.setup, { responseType: 'text' })
             .success(function (data, status, headers, config) {
                 console.log("Phone Verification Success success: ", data);
                 $window.location.href = $window.location.origin + "/verified/index.html";
