@@ -52,7 +52,10 @@ all the config values we need to run the application:
 
 | Config&nbsp;Value | Description                                                                                                                                                  |
 | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ACCOUNT_SECURITY_API_KEY  | Create a new Authy application in the [console](https://www.twilio.com/console/authy/). After you give it a name you can view the generated Account Security production API key. This is the string you will later need to set up in your environmental variables.|
+ Account&nbsp;Sid  | Your primary Twilio account identifier - find this [in the Console](https://www.twilio.com/console).                                                         |
+| Auth&nbsp;Token   | Used to authenticate - [just like the above, you'll find this here](https://www.twilio.com/console).                                                         |
+| Verification&nbsp;Sid |  For Verification Service. You can generate one [here](https://www.twilio.com/console/verify/services) |
+| Account Security Api Key  | Create a new Authy application in the [console](https://www.twilio.com/console/authy/). After you give it a name you can view the generated Account Security production API key. This is the string you will later need to set up in your environmental variables.|
 
 ### How to get an Authy API Key
 
@@ -76,26 +79,25 @@ After the above requirements have been met:
     ```bash
     cp .env.example .env
     ```
+
     See [Twilio Account Settings](#twilio-account-settings) to locate the necessary environment variables.
 
-    If you are using a UNIX operating system, when the application starts the environment variables will be loaded. _If you are using a different operating system, make sure that all the
-    variables from the `.env` file are loaded into your environment._
-
-3. Build the project
+    If you are using a UNIX operating system, load the environment variables before the application starts.
 
     ```bash
-    make install
+    source .env
     ```
-    **NOTE:** Running the build task will also run the tests
 
-4. Run the application
+    _If you are using a different operating system, make sure that all the variables from the `.env` file are loaded into your environment._
+
+3. Run the application
 
     ```bash
     make serve
     ```
     **NOTE:** If you are using a dedicated Java IDE like Eclipse or IntelliJ, you can start the application within the IDE and it will start in development mode, which means any changes on a source file will be automatically reloaded.
 
-7. Navigate to [http://localhost:8080](http://localhost:8080)
+4. Navigate to [http://localhost:8080](http://localhost:8080)
 
 That's it!
 

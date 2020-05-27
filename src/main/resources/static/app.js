@@ -158,12 +158,14 @@ app.controller('PhoneVerificationController', function ($scope, $http, $window, 
      * Initialize Phone Verification
      */
     $scope.startVerification = function () {
+        $scope.setup.phoneNumber = phoneInput.getNumber();
         $http.post('/api/phone-verification/start', $scope.setup, { responseType: 'text' })
             .success(function (data, status, headers, config) {
                 $scope.view.start = false;
                 console.log("Verification started: ", data);
             })
             .error(function (data, status, headers, config) {
+                alert("Phone verification error. Check console for details.");
                 console.error("Phone verification error: ", data);
             });
     };

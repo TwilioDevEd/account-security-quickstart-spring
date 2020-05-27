@@ -1,9 +1,6 @@
 package com.twilio.accountsecurity.controllers;
 
 import com.twilio.accountsecurity.utils.ThrowingRunnable;
-// import com.authy.AuthyException;
-// import com.twilio.accountsecurity.exceptions.PhoneVerificationException;
-// import com.twilio.accountsecurity.exceptions.TokenVerificationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

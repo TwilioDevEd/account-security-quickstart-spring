@@ -17,6 +17,9 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/css/intlTelInput.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/js/intlTelInput.min.js"></script>
     <script src="/app.js"></script>
     <style>
         .container {
@@ -36,25 +39,12 @@
                 <div class="panel-body" ng-show="view.start">
                     <form role="form">
                         <div class="row">
-                            <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="col-xs-8 col-sm-8 col-md-8">
                                 <div class="form-group">
-                                    <input type="text" name="countryCode" id="countryCode"
-                                           class="form-control"
-                                           ng-model="setup.countryCode"
-                                           class="form-control input-sm"
-                                           placeholder="Country Code">
+                                    <input type="tel" id="phoneNumber" class="form-control" />
                                 </div>
                             </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="phoneNumber" id="phoneNumber"
-                                           class="form-control"
-                                           ng-model="setup.phoneNumber"
-                                           class="form-control input-sm"
-                                           placeholder="Phone #">
-                                </div>
-                            </div>
-                            <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="col-xs-4 col-sm-4 col-md-4">
                                 <div class="form-group">
                                     <select name="via" id="via" ng-model="setup.via"  class="form-control">
                                         <option value="sms" selected="selected">SMS</option>
@@ -99,4 +89,12 @@
 </div>
 
 </body>
+<script>
+    const phoneInputField = document.querySelector("#phoneNumber");
+    const phoneInput = window.intlTelInput(phoneInputField, {
+        separateDialCode: true,
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/16.0.11/js/utils.js"
+        });
+</script>
 </html>

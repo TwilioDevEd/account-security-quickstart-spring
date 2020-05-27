@@ -29,7 +29,7 @@ public class PhoneVerificationController implements BaseController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> start(@Valid @RequestBody PhoneVerificationStartRequest requestBody) {
         return runWithCatch(() -> {
-            phoneVerificationService.start(requestBody.getCountryCode(),
+            phoneVerificationService.start(
                     requestBody.getPhoneNumber(),
                     requestBody.getVia());
         });
@@ -39,7 +39,7 @@ public class PhoneVerificationController implements BaseController {
     public ResponseEntity<?> verify(@Valid @RequestBody PhoneVerificationVerifyRequest requestBody,
                                  HttpSession session) {
         return runWithCatch(() -> {
-            phoneVerificationService.verify(requestBody.getCountryCode(),
+            phoneVerificationService.verify(
                     requestBody.getPhoneNumber(),
                     requestBody.getToken());
             session.setAttribute("ph_verified", true);

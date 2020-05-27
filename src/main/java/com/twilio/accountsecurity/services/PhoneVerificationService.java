@@ -1,47 +1,50 @@
 package com.twilio.accountsecurity.services;
 
-import com.authy.AuthyApiClient;
-import com.authy.AuthyException;
-import com.authy.api.Params;
-import com.authy.api.Verification;
-import com.twilio.accountsecurity.exceptions.TokenVerificationException;
+import com.twilio.Twilio;
+import com.twilio.rest.verify.v2.service.Verification;
+import com.twilio.rest.verify.v2.service.VerificationCreator;
+import com.twilio.rest.verify.v2.service.VerificationCheck;
+import com.twilio.rest.verify.v2.service.VerificationCheckCreator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.twilio.accountsecurity.exceptions.TokenVerificationException;
 
 @Service
 public class PhoneVerificationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenService.class);
 
-    private AuthyApiClient authyApiClient;
+    private Settings settings;
 
     @Autowired
-    public PhoneVerificationService(AuthyApiClient authyApiClient) {
-        this.authyApiClient = authyApiClient;
+    public PhoneVerificationService(@Autowired Settings settings) {
+        this.settings = settings;
+        Twilio.init(settings.getAccountSid(), settings.getAuthToken());
     }
 
-    public void start(String countryCode, String phoneNumber, String via) throws AuthyException {
-        Params params = new Params();
-        params.setAttribute("code_length", "4");
-        Verification verification = authyApiClient
-                .getPhoneVerification()
-                .start(phoneNumber, countryCode, via, params);
-
-        if(!verification.isOk()) {
-            logAndThrow("Error requesting phone verification. " +
-                    verification.getMessage());
-        }
+    public VerificationCreator getVerificationCreator(String verificationSid, String phoneNumber, String via) {
+        return Verification.creator(verificationSid, phoneNumber, via);
     }
 
-    public void verify(String countryCode, String phoneNumber, String token) throws AuthyException {
-        Verification verification = authyApiClient
-                .getPhoneVerification()
-                .check(phoneNumber, countryCode, token);
+    public void start(String phoneNumber, String via) {
+        this.getVerificationCreator(settings.getVerificationSid(), phoneNumber, via).create();
+    }
 
-        if(!verification.isOk()) {
-            logAndThrow("Error verifying token. " + verification.getMessage());
+    public VerificationCheckCreator getVerificationCheckCreator(String verificationSid, String phoneNumber, String token) {
+        return VerificationCheck.creator(verificationSid, token).setTo(phoneNumber);
+    }
+
+    public void verify(String phoneNumber, String token) {
+        VerificationCheck verificationCheck = this
+                        .getVerificationCheckCreator(settings.getVerificationSid(), phoneNumber, token)
+                        .create();
+        // logAndThrow(">>>>>>" + verificationCheck.toString() + " <<<<<<< " + verificationCheck.getStatus());
+        if(verificationCheck.getStatus().compareTo("approved") != 0) {
+            logAndThrow("Error verifying token. ");
         }
     }
 
