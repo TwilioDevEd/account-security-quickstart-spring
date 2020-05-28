@@ -57,10 +57,14 @@ class PhoneVerificationServiceSpec extends Specification {
         e.getMessage() == 'Error requesting phone verification. '
     }
 
-    /*def "verify - success"() {
+    def "verify - success"() {
         given:
-        VerificationCheck verificationCheck = Mock()
-        1 * verificationCheck.getStatus() >> 'approved'
+        VerificationCheck verificationCheck = VerificationCheck.fromJson('''
+            {
+                "status": "approved"
+            }
+        ''', new ObjectMapper())
+
         1 * phoneVerificationService.getVerificationCheckCreator(verificationSid, phone, token) >> Stub(VerificationCheckCreator) {
             create() >> verificationCheck
         }
@@ -74,10 +78,14 @@ class PhoneVerificationServiceSpec extends Specification {
 
     def "verify - error"() {
         given:
-        1 * phoneVerificationService.getVerificationCheckCreator(verificationSid, phone, token) >> Stub(VerificationCheckCreator) {
-            create() >> Stub(VerificationCheck) {
-                getStatus() >> 'expired'
+        VerificationCheck verificationCheck = VerificationCheck.fromJson('''
+            {
+                "status": "rejected"
             }
+        ''', new ObjectMapper())
+
+        1 * phoneVerificationService.getVerificationCheckCreator(verificationSid, phone, token) >> Stub(VerificationCheckCreator) {
+            create() >> verificationCheck
         }
 
         when:
@@ -86,5 +94,5 @@ class PhoneVerificationServiceSpec extends Specification {
         then:
         Exception e = thrown()
         e.getMessage() == 'Error verifying token. '
-    }*/
+    }
 }

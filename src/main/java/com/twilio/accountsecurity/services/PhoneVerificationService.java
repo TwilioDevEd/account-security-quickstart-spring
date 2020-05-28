@@ -42,7 +42,6 @@ public class PhoneVerificationService {
         VerificationCheck verificationCheck = this
                         .getVerificationCheckCreator(settings.getVerificationSid(), phoneNumber, token)
                         .create();
-        // logAndThrow(">>>>>>" + verificationCheck.toString() + " <<<<<<< " + verificationCheck.getStatus());
         if(verificationCheck.getStatus().compareTo("approved") != 0) {
             logAndThrow("Error verifying token. ");
         }
