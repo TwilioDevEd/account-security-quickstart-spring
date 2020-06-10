@@ -1,0 +1,13 @@
+version: "3.6"
+services:
+  app:
+    stdin_open: true
+    tty: true
+    environment:
+      - TWILIO_ACCOUNT_SID=ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      - TWILIO_AUTH_TOKEN=your_account_token
+      - TWILIO_VERIFICATION_SID=VAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      - ACCOUNT_SECURITY_API_KEY=ENTER_SECRET_HERE
+    build: .
+    ports: 
+      - "8080:8080"

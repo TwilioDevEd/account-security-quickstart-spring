@@ -101,6 +101,14 @@ After the above requirements have been met:
 
 That's it!
 
+### Docker
+
+If you have [Docker](https://www.docker.com/) already installed on your machine, you can use our `docker-compose.yml` to setup your project.
+
+1. Make sure you have the project cloned.
+2. Setup the environmental variables in the `docker-compose.yml` file, see the [Twilio Account Settings](#twilio-account-settings).
+3. Run `docker-compose --env-file /dev/null up`.
+
 ### Tests
 
 You can run the tests locally by typing:
