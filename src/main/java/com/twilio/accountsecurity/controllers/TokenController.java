@@ -28,19 +28,19 @@ public class TokenController implements BaseController {
     }
 
     @RequestMapping(value = "sms", method = RequestMethod.POST)
-    public ResponseEntity sms(HttpServletRequest request) {
+    public ResponseEntity<?> sms(HttpServletRequest request) {
         return runWithCatch(() ->
                 tokenService.sendSmsToken(request.getUserPrincipal().getName()));
     }
 
     @RequestMapping(value = "voice", method = RequestMethod.POST)
-    public ResponseEntity voice(HttpServletRequest request) {
+    public ResponseEntity<?> voice(HttpServletRequest request) {
         return runWithCatch(() ->
                 tokenService.sendVoiceToken(request.getUserPrincipal().getName()));
     }
 
     @RequestMapping(value = "onetouch", method = RequestMethod.POST)
-    public ResponseEntity oneTouch(HttpServletRequest request) {
+    public ResponseEntity<?> oneTouch(HttpServletRequest request) {
         return runWithCatch(() -> {
             String uuid = tokenService.sendOneTouchToken(request.getUserPrincipal()
                     .getName());
@@ -50,7 +50,7 @@ public class TokenController implements BaseController {
 
     @RequestMapping(value = "onetouchstatus", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity oneTouchStatus(HttpServletRequest request) {
+    public ResponseEntity<?> oneTouchStatus(HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
             boolean status = tokenService.retrieveOneTouchStatus(
@@ -65,7 +65,7 @@ public class TokenController implements BaseController {
 
     @RequestMapping(value = "verify", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity verify(@Valid @RequestBody VerifyTokenRequest requestBody,
+    public ResponseEntity<?> verify(@Valid @RequestBody VerifyTokenRequest requestBody,
                                  HttpServletRequest request) {
         return runWithCatch(() -> {
             tokenService.verify(request.getUserPrincipal().getName(), requestBody);

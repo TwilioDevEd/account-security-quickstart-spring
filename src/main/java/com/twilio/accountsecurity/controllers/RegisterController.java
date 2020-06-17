@@ -1,5 +1,6 @@
 package com.twilio.accountsecurity.controllers;
 
+import com.authy.AuthyException;
 import com.twilio.accountsecurity.controllers.requests.UserRegisterRequest;
 import com.twilio.accountsecurity.exceptions.UserExistsException;
 import com.twilio.accountsecurity.services.RegisterService;
@@ -33,8 +34,8 @@ public class RegisterController {
     @RequestMapping(value = "/api/register",
             method = {RequestMethod.GET, RequestMethod.POST},
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity register(@Valid @RequestBody UserRegisterRequest newUserRequest,
-                                   HttpServletRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest newUserRequest,
+                                      HttpServletRequest request) {
         try {
             registerService.register(newUserRequest);
             request.login(newUserRequest.getUsername(), newUserRequest.getPassword());
@@ -42,8 +43,9 @@ public class RegisterController {
         } catch (UserExistsException e) {
             return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED)
                     .body("User already exists");
-        } catch (ServletException e) {
-            LOGGER.error(e.getMessage());
+        } catch (AuthyException | ServletException e) {
+            LOGGER.error("Register Error: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

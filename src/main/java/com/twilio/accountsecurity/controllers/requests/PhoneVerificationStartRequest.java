@@ -7,16 +7,13 @@ public class PhoneVerificationStartRequest {
     @NotNull
     private String phoneNumber;
     @NotNull
-    private String countryCode;
-    @NotNull
     private String via;
 
     public PhoneVerificationStartRequest() {
     }
 
-    public PhoneVerificationStartRequest(String phoneNumber, String countryCode, String via) {
+    public PhoneVerificationStartRequest(String phoneNumber, String via) {
         this.phoneNumber = phoneNumber;
-        this.countryCode = countryCode;
         this.via = via;
     }
 
@@ -26,14 +23,6 @@ public class PhoneVerificationStartRequest {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
     }
 
     public String getVia() {

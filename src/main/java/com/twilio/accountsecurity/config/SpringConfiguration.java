@@ -3,7 +3,7 @@ package com.twilio.accountsecurity.config;
 import com.authy.AuthyApiClient;
 import com.twilio.accountsecurity.services.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

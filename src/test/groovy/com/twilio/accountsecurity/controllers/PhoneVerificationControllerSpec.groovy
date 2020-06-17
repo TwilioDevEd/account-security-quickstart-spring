@@ -24,15 +24,14 @@ class PhoneVerificationControllerSpec extends Specification {
     MockMvc mockMvc = standaloneSetup(phoneVerificationController).build()
 
     static phone = '1'
-    static countryCode = '2'
     static via = 'sms'
     static token = 'token'
 
     def "start - returns 200"() {
         given:
-        def request = new PhoneVerificationStartRequest(phone, countryCode, via)
+        def request = new PhoneVerificationStartRequest(phone, via)
         def requestBody = new JsonBuilder(request).toString()
-        1 * phoneVerificationService.start(countryCode, phone, via)
+        1 * phoneVerificationService.start(phone, via)
 
         when:
         def response = mockMvc.perform(post('/api/phone-verification/start')
@@ -46,9 +45,9 @@ class PhoneVerificationControllerSpec extends Specification {
 
     def "start - returns 500 for PhoneVerificationException"() {
         given:
-        def request = new PhoneVerificationStartRequest(phone, countryCode, via)
+        def request = new PhoneVerificationStartRequest(phone, via)
         def requestBody = new JsonBuilder(request).toString()
-        1 * phoneVerificationService.start(countryCode, phone, via) >> {
+        1 * phoneVerificationService.start(phone, via) >> {
             throw new PhoneVerificationException('message')
         }
 
@@ -65,9 +64,9 @@ class PhoneVerificationControllerSpec extends Specification {
 
     def "verify - returns 200"() {
         given:
-        def httpRequest = new PhoneVerificationVerifyRequest(phone, countryCode, token)
+        def httpRequest = new PhoneVerificationVerifyRequest(phone, token)
         def requestBody = new JsonBuilder(httpRequest).toString()
-        1 * phoneVerificationService.verify(countryCode, phone, token)
+        1 * phoneVerificationService.verify(phone, token)
 
         expect:
         mockMvc
@@ -80,9 +79,9 @@ class PhoneVerificationControllerSpec extends Specification {
 
     def "verify - returns 500 for PhoneVerificationException"() {
         given:
-        def httpRequest = new PhoneVerificationVerifyRequest(phone, countryCode, token)
+        def httpRequest = new PhoneVerificationVerifyRequest(phone, token)
         def requestBody = new JsonBuilder(httpRequest).toString()
-        1 * phoneVerificationService.verify(countryCode, phone, token) >> {
+        1 * phoneVerificationService.verify(phone, token) >> {
             throw new PhoneVerificationException('message')
         }
 
