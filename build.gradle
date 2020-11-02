@@ -48,7 +48,7 @@ dependencies {
     
     // Spock
     testImplementation(group:'org.spockframework', name:'spock-core', version:'2.0-M2-groovy-3.0')
-    testImplementation(group:'org.spockframework', name:'spock-spring', version:'2.0-M2-groovy-3.0')
+    testImplementation(group:'org.spockframework', name:'spock-spring', version:'2.0-M4-groovy-3.0')
     testRuntime(group:'cglib', name:'cglib-nodep', version:'3.3.0')
 }
 
