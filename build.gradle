@@ -32,7 +32,7 @@ dependencies {
     implementation(group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1')
     implementation(group: 'javax.el', name:'javax.el-api', version:'3.0.0')
     // Groovy
-    implementation(group:'org.codehaus.groovy', name:'groovy-all', version:'3.0.8')
+    implementation(group:'org.codehaus.groovy', name:'groovy-all', version:'3.0.14')
 
     // Spring
     implementation(group:'org.springframework.boot', name:'spring-boot-starter-data-jpa', version:"${springBootVer}")
