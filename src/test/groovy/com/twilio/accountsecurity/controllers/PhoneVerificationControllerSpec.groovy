@@ -1,10 +1,11 @@
 package com.twilio.accountsecurity.controllers
 
+import com.fasterxml.jackson.core.JsonFactoryBuilder
 import com.twilio.accountsecurity.controllers.requests.PhoneVerificationStartRequest
 import com.twilio.accountsecurity.controllers.requests.PhoneVerificationVerifyRequest
 import com.twilio.accountsecurity.exceptions.PhoneVerificationException
 import com.twilio.accountsecurity.services.PhoneVerificationService
-import groovy.json.JsonBuilder
+import org.json.JSONObject
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
@@ -30,7 +31,7 @@ class PhoneVerificationControllerSpec extends Specification {
     def "start - returns 200"() {
         given:
         def request = new PhoneVerificationStartRequest(phone, via)
-        def requestBody = new JsonBuilder(request).toString()
+        def requestBody = new JSONObject(request).toString()
         1 * phoneVerificationService.start(phone, via)
 
         when:
@@ -46,7 +47,7 @@ class PhoneVerificationControllerSpec extends Specification {
     def "start - returns 500 for PhoneVerificationException"() {
         given:
         def request = new PhoneVerificationStartRequest(phone, via)
-        def requestBody = new JsonBuilder(request).toString()
+        def requestBody = new JSONObject(request).toString()
         1 * phoneVerificationService.start(phone, via) >> {
             throw new PhoneVerificationException('message')
         }
@@ -65,7 +66,7 @@ class PhoneVerificationControllerSpec extends Specification {
     def "verify - returns 200"() {
         given:
         def httpRequest = new PhoneVerificationVerifyRequest(phone, token)
-        def requestBody = new JsonBuilder(httpRequest).toString()
+        def requestBody = new JSONObject(httpRequest).toString()
         1 * phoneVerificationService.verify(phone, token)
 
         expect:
@@ -80,7 +81,7 @@ class PhoneVerificationControllerSpec extends Specification {
     def "verify - returns 500 for PhoneVerificationException"() {
         given:
         def httpRequest = new PhoneVerificationVerifyRequest(phone, token)
-        def requestBody = new JsonBuilder(httpRequest).toString()
+        def requestBody = new JSONObject(httpRequest).toString()
         1 * phoneVerificationService.verify(phone, token) >> {
             throw new PhoneVerificationException('message')
         }
