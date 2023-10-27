@@ -30,8 +30,6 @@ configurations {
 dependencies {
     implementation(group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1')
     implementation(group: 'javax.el', name:'javax.el-api', version:'3.0.0')
-    // Groovy
-    implementation (group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.15', ext: 'pom')
 
     // Spring
     implementation(group:'org.springframework.boot', name:'spring-boot-starter-data-jpa', version:"${springBootVer}")
@@ -44,10 +42,14 @@ dependencies {
 
     testImplementation(group: 'junit', name:'junit', version:'4.13.2')
     testImplementation(group:'org.springframework.boot', name:'spring-boot-starter-test', version:"${springBootVer}")
+    // Groovy
+    testImplementation (group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.15', ext: 'pom')
 
     // Constraints
     constraints {
-        implementation('org.json:json:20231013') because("transitive dependecy of authy-java has vulnerabilites issues")
+        implementation('org.json:json:20231013') {
+          because("version defined in authy-java (transitive dependency) has vulnerabilities issues")
+        }
     }
 
     // Spock
