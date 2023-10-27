@@ -1,22 +1,15 @@
 package com.twilio.accountsecurity.controllers
 
 import com.twilio.accountsecurity.controllers.requests.UserRegisterRequest
-import com.twilio.accountsecurity.exceptions.TokenVerificationException
 import com.twilio.accountsecurity.exceptions.UserExistsException
 import com.twilio.accountsecurity.services.RegisterService
-import groovy.json.JsonBuilder
-import org.springframework.http.MediaType
-import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.RequestPostProcessor
 import spock.lang.Specification
 import spock.lang.Subject
 
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
-import java.security.Principal
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
 class RegisterControllerSpec extends Specification {

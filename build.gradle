@@ -9,7 +9,6 @@ plugins {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-ext['logbackVersion'] = '1.1.11'
 ext['springBootVer'] = '2.2.6.RELEASE'
 
 
@@ -31,25 +30,32 @@ configurations {
 dependencies {
     implementation(group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1')
     implementation(group: 'javax.el', name:'javax.el-api', version:'3.0.0')
-    // Groovy
-    implementation(group:'org.codehaus.groovy', name:'groovy-all', version:'3.0.8')
 
     // Spring
     implementation(group:'org.springframework.boot', name:'spring-boot-starter-data-jpa', version:"${springBootVer}")
     implementation(group:'org.springframework.boot', name:'spring-boot-starter-security', version:"${springBootVer}")
-    implementation(group:'net.rakugakibox.spring.boot', name:'logback-access-spring-boot-starter', version:'2.8.0')
+    implementation(group:'net.rakugakibox.spring.boot', name:'logback-access-spring-boot-starter', version:'2.11.0')
 
     implementation(group:'com.authy', name:'authy-java', version:'1.5.1')
-    implementation(group:'com.twilio.sdk', name:'twilio', version:'8.11.0')
-    implementation(group:'org.xerial', name:'sqlite-jdbc', version:'3.34.0')
+    implementation(group:'com.twilio.sdk', name:'twilio', version:'8.31.1')
+    implementation(group:'org.xerial', name:'sqlite-jdbc', version:'3.41.2.2')
 
     testImplementation(group: 'junit', name:'junit', version:'4.13.2')
     testImplementation(group:'org.springframework.boot', name:'spring-boot-starter-test', version:"${springBootVer}")
-    
+    // Groovy
+    testImplementation (group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.15', ext: 'pom')
+
+    // Constraints
+    constraints {
+        implementation('org.json:json:20231013') {
+          because("version defined in authy-java (transitive dependency) has vulnerabilities issues")
+        }
+    }
+
     // Spock
     testImplementation(group:'org.spockframework', name:'spock-core', version:'2.0-M4-groovy-3.0')
     testImplementation(group:'org.spockframework', name:'spock-spring', version:'2.0-M4-groovy-3.0')
-    testRuntime(group:'cglib', name:'cglib-nodep', version:'3.3.0')
+    testRuntimeOnly(group:'cglib', name:'cglib-nodep', version:'3.3.0')
 }
 
 test {
