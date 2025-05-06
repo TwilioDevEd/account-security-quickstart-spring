@@ -6,16 +6,14 @@ plugins {
     id 'groovy'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-ext['springBootVer'] = '2.2.6.RELEASE'
+ext['springBootVer'] = '2.7.18'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 gretty {
-    springBootVersion = '2.2.6.RELEASE'
+    springBootVersion = '2.7.18'
     springBoot = true
     servletContainer = 'jetty11'
     contextPath = ''
@@ -26,16 +24,17 @@ configurations {
 }
 
 dependencies {
-    implementation(group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1')
-    implementation(group: 'javax.el', name:'javax.el-api', version:'3.0.0')
+    implementation(group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.2')
+    implementation(group: 'jakarta.servlet', name:'jakarta.servlet-api', version:'6.1.0')
 
     // Spring
     implementation(group:'org.springframework.boot', name:'spring-boot-starter-data-jpa', version:"${springBootVer}")
     implementation(group:'org.springframework.boot', name:'spring-boot-starter-security', version:"${springBootVer}")
+    implementation(group:'org.springframework.boot', name:'spring-boot-starter-validation', version:"${springBootVer}")
     implementation(group:'net.rakugakibox.spring.boot', name:'logback-access-spring-boot-starter', version:'2.11.0')
 
     implementation(group:'com.authy', name:'authy-java', version:'1.5.1')
-    implementation(group:'com.twilio.sdk', name:'twilio', version:'8.31.1')
+    implementation(group:'com.twilio.sdk', name:'twilio', version:'10.6.8')
     implementation(group:'org.xerial', name:'sqlite-jdbc', version:'3.41.2.2')
 
     testImplementation(group: 'junit', name:'junit', version:'4.13.2')

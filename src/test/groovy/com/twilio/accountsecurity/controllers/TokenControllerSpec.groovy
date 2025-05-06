@@ -7,8 +7,8 @@ import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 import spock.lang.Subject
 
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpSession
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpSession
 import java.security.Principal
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
