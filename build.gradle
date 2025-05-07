@@ -1,27 +1,22 @@
 plugins {
     id 'java'
-    id 'org.gretty' version '4.1.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.3.11'
     id 'idea'
     id 'groovy'
     id 'io.github.joselion.pretty-jupiter' version '3.5.0'
 }
 
 java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-ext['springBootVer'] = '3.3.2'
-
 repositories {
     mavenCentral()
-}
-
-gretty {
-    springBootVersion = '3.3.2'
-    springBoot = true
-    servletContainer = 'jetty11'
-    contextPath = ''
 }
 
 configurations {
@@ -30,12 +25,14 @@ configurations {
 
 dependencies {
     implementation(group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.2')
-    implementation(group: 'jakarta.servlet', name:'jakarta.servlet-api', version:'6.1.0')
+    providedRuntime(group: 'jakarta.servlet', name:'jakarta.servlet-api', version:'6.1.0')
 
     // Spring
-    implementation(group:'org.springframework.boot', name:'spring-boot-starter-data-jpa', version:"${springBootVer}")
-    implementation(group:'org.springframework.boot', name:'spring-boot-starter-security', version:"${springBootVer}")
-    implementation(group:'org.springframework.boot', name:'spring-boot-starter-validation', version:"${springBootVer}")
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
     implementation(group:'net.rakugakibox.spring.boot', name:'logback-access-spring-boot-starter', version:'2.11.0')
 
     implementation group: 'org.hibernate.orm', name: 'hibernate-community-dialects', version: '6.6.13.Final'
@@ -43,9 +40,12 @@ dependencies {
     implementation(group:'com.authy', name:'authy-java', version:'1.5.1')
     implementation(group:'com.twilio.sdk', name:'twilio', version:'10.8.0')
     implementation(group:'org.xerial', name:'sqlite-jdbc', version:'3.49.1.0')
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     testImplementation(group: 'junit', name:'junit', version:'4.13.2')
-    testImplementation(group:'org.springframework.boot', name:'spring-boot-starter-test', version:"${springBootVer}")
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
     // Groovy
     testImplementation (group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.26', ext: 'pom')
 

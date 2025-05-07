@@ -4,4 +4,4 @@ install:
 	./gradlew build
 
 serve:
-	./gradlew appRun
+	./gradlew bootRun
