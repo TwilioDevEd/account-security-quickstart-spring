@@ -26,10 +26,10 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .addFilterAfter(new TwoFAFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/protected/**", "/2fa/**").authenticated()
-                        .requestMatchers("/", "/register/**", "/api/**", "/**.js", "/**.html").permitAll()
-                );
+                .authorizeRequests()
+                .requestMatchers("/protected/**", "/2fa/**").authenticated()
+                .requestMatchers("/", "/register/**", "/api/**", "/**.js", "/**.html").permitAll()
+                .and().logout().permitAll();
         return http.build();
     }
 
