@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.gretty' version '4.1.6'
     id 'idea'
-    id 'war'
     id 'groovy'
 }
 
