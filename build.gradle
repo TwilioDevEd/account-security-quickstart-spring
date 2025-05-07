@@ -1,9 +1,9 @@
 plugins {
-    id 'org.springframework.boot' version '3.3.2'
     id 'java'
     id 'org.gretty' version '4.1.6'
     id 'idea'
     id 'groovy'
+    id 'io.github.joselion.pretty-jupiter' version '3.5.0'
 }
 
 java {
