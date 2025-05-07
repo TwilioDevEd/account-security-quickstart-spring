@@ -26,7 +26,7 @@ public class PhoneVerificationController implements BaseController {
     }
 
     @RequestMapping(path = "start", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> start(@Valid @RequestBody PhoneVerificationStartRequest requestBody) {
         return runWithCatch(() -> {
             phoneVerificationService.start(
