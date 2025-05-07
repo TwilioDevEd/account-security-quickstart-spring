@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.io.IOException;
 
 @RestController

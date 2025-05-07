@@ -1,18 +1,24 @@
 plugins {
+    id 'org.springframework.boot' version '3.3.2'
     id 'java'
     id 'org.gretty' version '4.1.6'
     id 'idea'
     id 'groovy'
 }
 
-ext['springBootVer'] = '2.7.18'
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+ext['springBootVer'] = '3.3.2'
 
 repositories {
     mavenCentral()
 }
 
 gretty {
-    springBootVersion = '2.7.18'
+    springBootVersion = '3.3.2'
     springBoot = true
     servletContainer = 'jetty11'
     contextPath = ''

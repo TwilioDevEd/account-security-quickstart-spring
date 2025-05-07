@@ -2,7 +2,7 @@ package com.twilio.accountsecurity.controllers.requests;
 
 import com.twilio.accountsecurity.models.UserModel;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class UserRegisterRequest {
     @NotNull
