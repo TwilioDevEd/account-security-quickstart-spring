@@ -1,6 +1,5 @@
 package com.twilio.accountsecurity.controllers
 
-import com.fasterxml.jackson.core.JsonFactoryBuilder
 import com.twilio.accountsecurity.controllers.requests.PhoneVerificationStartRequest
 import com.twilio.accountsecurity.controllers.requests.PhoneVerificationVerifyRequest
 import com.twilio.accountsecurity.exceptions.PhoneVerificationException
@@ -37,7 +36,7 @@ class PhoneVerificationControllerSpec extends Specification {
         when:
         def response = mockMvc.perform(post('/api/phone-verification/start')
                 .content(requestBody)
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().response
 
         then:
@@ -55,7 +54,7 @@ class PhoneVerificationControllerSpec extends Specification {
         when:
         def response = mockMvc.perform(post('/api/phone-verification/start')
                 .content(requestBody)
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().response
 
         then:
@@ -73,7 +72,7 @@ class PhoneVerificationControllerSpec extends Specification {
         mockMvc
             .perform(post('/api/phone-verification/verify')
                     .content(requestBody)
-                    .contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(request().sessionAttribute("ph_verified", true))
     }
@@ -89,7 +88,7 @@ class PhoneVerificationControllerSpec extends Specification {
         when:
         def response = mockMvc.perform(post('/api/phone-verification/verify')
                 .content(requestBody)
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().response
 
         then:

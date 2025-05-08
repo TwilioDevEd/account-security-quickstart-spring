@@ -1,26 +1,22 @@
 plugins {
     id 'java'
-    id 'org.gretty' version '3.0.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.3.11'
     id 'idea'
-    id 'war'
     id 'groovy'
-    id 'com.github.joselion.pretty-jupiter' version '1.3.4'
+    id 'io.github.joselion.pretty-jupiter' version '3.5.0'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-ext['springBootVer'] = '2.2.6.RELEASE'
-
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
-    jcenter()
-}
-
-gretty {
-    springBootVersion = '2.2.6.RELEASE'
-    springBoot = true
-    servletContainer = 'jetty9.4'
-    contextPath = ''
+    mavenCentral()
 }
 
 configurations {
@@ -28,22 +24,30 @@ configurations {
 }
 
 dependencies {
-    implementation(group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1')
-    implementation(group: 'javax.el', name:'javax.el-api', version:'3.0.0')
+    implementation(group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.2')
+    providedRuntime(group: 'jakarta.servlet', name:'jakarta.servlet-api', version:'6.1.0')
 
     // Spring
-    implementation(group:'org.springframework.boot', name:'spring-boot-starter-data-jpa', version:"${springBootVer}")
-    implementation(group:'org.springframework.boot', name:'spring-boot-starter-security', version:"${springBootVer}")
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
     implementation(group:'net.rakugakibox.spring.boot', name:'logback-access-spring-boot-starter', version:'2.11.0')
 
+    implementation group: 'org.hibernate.orm', name: 'hibernate-community-dialects', version: '6.6.13.Final'
+
     implementation(group:'com.authy', name:'authy-java', version:'1.5.1')
-    implementation(group:'com.twilio.sdk', name:'twilio', version:'8.31.1')
-    implementation(group:'org.xerial', name:'sqlite-jdbc', version:'3.41.2.2')
+    implementation(group:'com.twilio.sdk', name:'twilio', version:'10.8.0')
+    implementation(group:'org.xerial', name:'sqlite-jdbc', version:'3.49.1.0')
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     testImplementation(group: 'junit', name:'junit', version:'4.13.2')
-    testImplementation(group:'org.springframework.boot', name:'spring-boot-starter-test', version:"${springBootVer}")
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
     // Groovy
-    testImplementation (group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.15', ext: 'pom')
+    testImplementation (group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.26', ext: 'pom')
 
     // Constraints
     constraints {
@@ -53,16 +57,17 @@ dependencies {
     }
 
     // Spock
-    testImplementation(group:'org.spockframework', name:'spock-core', version:'2.0-M4-groovy-3.0')
-    testImplementation(group:'org.spockframework', name:'spock-spring', version:'2.0-M4-groovy-3.0')
+    testImplementation(group:'org.spockframework', name:'spock-core', version:'2.4-M6-groovy-4.0')
+    testImplementation(group:'org.spockframework', name:'spock-spring', version:'2.4-M6-groovy-4.0')
     testRuntimeOnly(group:'cglib', name:'cglib-nodep', version:'3.3.0')
+    testRuntimeOnly('org.junit.platform:junit-platform-launcher')
 }
 
 test {
     useJUnitPlatform()
     reports {
-        junitXml.enabled = false
-        html.enabled = false
+        junitXml.required = false
+        html.required = false
     }
     testLogging {
         exceptionFormat = "full"

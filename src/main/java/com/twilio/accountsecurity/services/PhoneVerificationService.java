@@ -35,7 +35,7 @@ public class PhoneVerificationService {
     }
 
     public VerificationCheckCreator getVerificationCheckCreator(String verificationSid, String phoneNumber, String token) {
-        return VerificationCheck.creator(verificationSid, token).setTo(phoneNumber);
+        return VerificationCheck.creator(verificationSid).setTo(phoneNumber);
     }
 
     public void verify(String phoneNumber, String token) {

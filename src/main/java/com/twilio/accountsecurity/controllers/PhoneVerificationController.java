@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/phone-verification")
@@ -26,7 +26,7 @@ public class PhoneVerificationController implements BaseController {
     }
 
     @RequestMapping(path = "start", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> start(@Valid @RequestBody PhoneVerificationStartRequest requestBody) {
         return runWithCatch(() -> {
             phoneVerificationService.start(

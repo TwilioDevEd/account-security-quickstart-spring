@@ -41,7 +41,7 @@ Implementations in other languages:
 
 ### Requirements
 
-- [Java Development Kit](https://adoptopenjdk.net/) version 11 or later.
+- [Java Development Kit](https://adoptopenjdk.net/) version 17 or later.
 - A Twilio account - [sign up](https://www.twilio.com/try-twilio)
 
 ### Twilio Account Settings
