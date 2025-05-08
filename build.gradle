@@ -51,7 +51,7 @@ dependencies {
 
     // Constraints
     constraints {
-        implementation('org.json:json:20231013') {
+        implementation('org.json:json:20250107') {
           because("version defined in authy-java (transitive dependency) has vulnerabilities issues")
         }
     }
